@@ -178,7 +178,10 @@
         fetch('https://raw.githubusercontent.com/CoolExecutor/keysystem/main/keys')
           .then(res => res.text())
           .then(text => {
-            const keys = text.trim().split('\n').filter(k => k.length > 0);
+            const keys = text.trim().split('\n')
+              .map(k => k.trim().replace(/^"+|"+$/g, '').replace(/,$/, ''))
+              .filter(k => k.length > 0);
+
             if (keys.length === 0) throw new Error('No keys found');
             const randomKey = keys[Math.floor(Math.random() * keys.length)];
 
