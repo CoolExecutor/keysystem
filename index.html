@@ -1,51 +1,67 @@
-<script>
-  const btn = document.getElementById('actionBtn');
-  const title = document.getElementById('title');
-  const params = new URLSearchParams(window.location.search);
-  const step = params.get('step');
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Ключи</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* ... стили как раньше ... */
+  </style>
+</head>
+<body>
+  <h1 id="title">Шаг 1: Получить ключ</h1>
+  <button id="actionBtn">Перейти к шагу 1</button>
 
-  if (!step) {
-    // Старт — сброс localStorage
-    localStorage.removeItem('step1done');
-    localStorage.removeItem('step2done');
-    btn.onclick = () => {
-      localStorage.setItem('step1done', 'true');
-      window.location.href = 'https://linkvertise.com/YOUR-LINK-STEP1';
-    };
-  }
+  <!-- ✅ JavaScript В КОНЦЕ -->
+  <script>
+    const btn = document.getElementById('actionBtn');
+    const title = document.getElementById('title');
+    const params = new URLSearchParams(window.location.search);
+    const step = params.get('step');
 
-  if (step === '2') {
-    if (localStorage.getItem('step1done') !== 'true') {
-      title.textContent = '🚫 Ошибка: вы не прошли шаг 1';
-      btn.style.display = 'none';
-    } else {
-      title.textContent = 'Шаг 2: Почти готово';
-      btn.textContent = 'Перейти ко второму шагу';
+    if (!step) {
+      localStorage.removeItem('step1done');
+      localStorage.removeItem('step2done');
       btn.onclick = () => {
-        localStorage.setItem('step2done', 'true');
-        window.location.href = 'https://linkvertise.com/YOUR-LINK-STEP2';
+        localStorage.setItem('step1done', 'true');
+        window.location.href = 'https://linkvertise.com/YOUR-LINK-STEP1';
       };
     }
-  }
 
-  if (step === 'final') {
-    if (localStorage.getItem('step2done') !== 'true') {
-      title.textContent = '🚫 Ошибка: вы не прошли шаг 2';
-      btn.style.display = 'none';
-    } else {
-      title.textContent = 'Шаг 3: Получение ключа...';
-      btn.style.display = 'none';
-
-      fetch('https://raw.githubusercontent.com/CoolExecutor/keysystem/main/keys')
-        .then(res => res.text())
-        .then(data => {
-          const keys = data.trim().split('\n');
-          const randomKey = keys[Math.floor(Math.random() * keys.length)];
-          title.innerHTML = `✅ Ваш ключ:<br><code>${randomKey}</code>`;
-        })
-        .catch(() => {
-          title.textContent = 'Ошибка при получении ключа.';
-        });
+    if (step === '2') {
+      if (localStorage.getItem('step1done') !== 'true') {
+        title.textContent = '🚫 Ошибка: вы не прошли шаг 1';
+        btn.style.display = 'none';
+      } else {
+        title.textContent = 'Шаг 2: Почти готово';
+        btn.textContent = 'Перейти ко второму шагу';
+        btn.onclick = () => {
+          localStorage.setItem('step2done', 'true');
+          window.location.href = 'https://linkvertise.com/YOUR-LINK-STEP2';
+        };
+      }
     }
-  }
-</script>
+
+    if (step === 'final') {
+      if (localStorage.getItem('step2done') !== 'true') {
+        title.textContent = '🚫 Ошибка: вы не прошли шаг 2';
+        btn.style.display = 'none';
+      } else {
+        title.textContent = 'Шаг 3: Получение ключа...';
+        btn.style.display = 'none';
+
+        fetch('https://raw.githubusercontent.com/CoolExecutor/keysystem/main/keys')
+          .then(res => res.text())
+          .then(data => {
+            const keys = data.trim().split('\n');
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
+            title.innerHTML = `✅ Ваш ключ:<br><code>${randomKey}</code>`;
+          })
+          .catch(() => {
+            title.textContent = 'Ошибка при получении ключа.';
+          });
+      }
+    }
+  </script>
+</body>
+</html>
