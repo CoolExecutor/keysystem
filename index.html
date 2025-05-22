@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Ключи</title>
+  <title>Keys</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     :root {
@@ -134,8 +134,8 @@
   </style>
 </head>
 <body>
-  <h1 id="title">Шаг 1: Получить ключ</h1>
-  <button id="actionBtn">Перейти к шагу 1</button>
+  <h1 id="title">Step 1: Get your key</h1>
+  <button id="actionBtn">Go to Step 1</button>
 
   <script>
     const btn = document.getElementById('actionBtn');
@@ -154,11 +154,11 @@
 
     if (step === '2') {
       if (localStorage.getItem('step1done') !== 'true') {
-        title.innerHTML = '<span class="error">🚫 Ошибка: вы не прошли шаг 1</span>';
+        title.innerHTML = '<span class="error">🚫 Error: You have not completed Step 1</span>';
         btn.style.display = 'none';
       } else {
-        title.textContent = 'Шаг 2: Почти готово';
-        btn.textContent = 'Перейти ко второму шагу';
+        title.textContent = 'Step 2: Almost ready';
+        btn.textContent = 'Go to Step 2';
         btn.onclick = () => {
           localStorage.setItem('step2done', 'true');
           window.location.href = 'https://direct-link.net/1352957/step-2';
@@ -168,34 +168,30 @@
 
     if (step === 'final') {
       if (localStorage.getItem('step2done') !== 'true') {
-        title.innerHTML = '<span class="error">🚫 Ошибка: вы не прошли шаг 2</span>';
+        title.innerHTML = '<span class="error">🚫 Error: You have not completed Step 2</span>';
         btn.style.display = 'none';
       } else {
-        title.textContent = 'Шаг 3: Получение ключа...';
+        title.textContent = 'Step 3: Retrieving your key...';
         btn.style.display = 'none';
 
         fetch('https://raw.githubusercontent.com/CoolExecutor/keysystem/main/keys')
-          .then(res => res.json()) // Обрабатываем JSON
+          .then(res => res.json())
           .then(data => {
-            // data — массив ключей, например: ["CoolExecutor-NMz7MacvLkPRoj", "ДругойКлюч", ...]
             const randomKey = data[Math.floor(Math.random() * data.length)];
 
-            // Формируем HTML с картинкой, ключом и кнопкой
             title.innerHTML = `
               <img id="verified-img" src="verified.png" alt="Verified" />
-              Ваш ключ:<br>
+              Your key:<br>
               <code id="key-code">${randomKey}</code>
               <br>
-              <button id="copyBtn">Скопировать ключ</button>
-              <div id="copy-msg">Скопировано</div>
+              <button id="copyBtn">Copy key</button>
+              <div id="copy-msg">Copied</div>
             `;
 
-            // Кнопка копирования
             const copyBtn = document.getElementById('copyBtn');
-            const keyCode = document.getElementById('key-code');
             const copyMsg = document.getElementById('copy-msg');
 
-            copyMsg.style.opacity = '0'; // Скрываем изначально
+            copyMsg.style.opacity = '0';
 
             copyBtn.onclick = () => {
               navigator.clipboard.writeText(randomKey).then(() => {
@@ -205,20 +201,20 @@
                   copyMsg.classList.remove('visible');
                 }, 5000);
               }).catch(() => {
-                copyMsg.textContent = 'Ошибка копирования';
+                copyMsg.textContent = 'Copy failed';
                 copyMsg.style.color = '#ff4c4c';
                 copyMsg.classList.add('visible');
 
                 setTimeout(() => {
                   copyMsg.classList.remove('visible');
                   copyMsg.style.color = 'var(--success-color)';
-                  copyMsg.textContent = 'Скопировано';
+                  copyMsg.textContent = 'Copied';
                 }, 5000);
               });
             };
           })
           .catch(() => {
-            title.innerHTML = '<span class="error">Ошибка при получении ключа.</span>';
+            title.innerHTML = '<span class="error">Error fetching keys.</span>';
           });
       }
     }
