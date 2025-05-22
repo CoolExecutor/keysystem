@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Получить ключ</title>
+</head>
+<body>
+  <h1 id="title">Шаг 1: Получить ключ</h1>
+  <button id="actionBtn">Перейти к шагу 1</button>
+
+  <script>
+    const btn = document.getElementById('actionBtn');
+    const title = document.getElementById('title');
+    const urlParams = new URLSearchParams(window.location.search);
+    const step = urlParams.get('step');
+
+    if (!step) {
+      btn.onclick = () => {
+        window.location.href = 'https://linkvertise.com/your-link-step1';
+      };
+    }
+
+    if (step === '2') {
+      title.textContent = 'Шаг 2: Почти готово';
+      btn.textContent = 'Перейти ко второму шагу';
+      btn.onclick = () => {
+        window.location.href = 'https://linkvertise.com/your-link-step2';
+      };
+    }
+
+    if (step === 'final') {
+      title.textContent = 'Шаг 3: Получение ключа...';
+      btn.style.display = 'none';
+
+      fetch('https://raw.githubusercontent.com/CoolExecutor/keysystem/main/keys')
+        .then(res => res.text())
+        .then(data => {
+          const keys = data.trim().split('\n');
+          const randomKey = keys[Math.floor(Math.random() * keys.length)];
+          title.innerHTML = `✅ Ваш ключ:<br><code>${randomKey}</code>`;
+        })
+        .catch(() => {
+          title.textContent = 'Ошибка при получении ключа.';
+        });
+    }
+  </script>
+</body>
+</html>
