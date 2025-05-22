@@ -176,9 +176,11 @@
         btn.style.display = 'none';
 
         fetch('https://raw.githubusercontent.com/CoolExecutor/keysystem/main/keys')
-          .then(res => res.json())
-          .then(data => {
-            const randomKey = data[Math.floor(Math.random() * data.length)];
+          .then(res => res.text())
+          .then(text => {
+            const keys = text.trim().split('\n').filter(k => k.length > 0);
+            if (keys.length === 0) throw new Error('No keys found');
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
 
             title.innerHTML = `
               <div style="display: flex; flex-direction: column; align-items: center;">
