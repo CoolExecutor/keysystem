@@ -96,6 +96,7 @@
     #verified-img {
       width: 60px;
       margin-bottom: 12px;
+      user-select: none;
     }
 
     #copy-msg {
@@ -180,12 +181,13 @@
             const randomKey = data[Math.floor(Math.random() * data.length)];
 
             title.innerHTML = `
-              <img id="verified-img" src="verified.png" alt="Verified" />
-              Your key:<br>
-              <code id="key-code">${randomKey}</code>
-              <br>
-              <button id="copyBtn">Copy key</button>
-              <div id="copy-msg">Copied</div>
+              <div style="display: flex; flex-direction: column; align-items: center;">
+                <img id="verified-img" src="verified.png" alt="Verified" />
+                <div>Your key:</div>
+                <code id="key-code" style="margin-top: 8px;">${randomKey}</code>
+                <button id="copyBtn" style="margin-top: 16px;">Copy key</button>
+                <div id="copy-msg">Copied</div>
+              </div>
             `;
 
             const copyBtn = document.getElementById('copyBtn');
